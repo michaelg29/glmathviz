@@ -40,6 +40,7 @@
 	* *glad\include* -> *$(SolutionDir)\Linking\include*
 		* this should add two folders (*glad*, *KHR*) to your include directory
 	* *glad\src\glad.c* -> *$(ProjectDir)\lib*
+3. Include the glad.c source file with the project in Visual Studio
 
 ## GLM
 1. Download the latest package from [GLM](https://github.com/g-truc/glm/tags)
@@ -64,3 +65,4 @@
     - OpenGLTutorial/src/graphics/rendering/shader.cpp, [Source](https://raw.githubusercontent.com/michaelg29/OpenGLTutorial/master/OpenGLTutorial/src/graphics/rendering/shader.cpp)
     - OpenGLTutorial/src/graphics/rendering/material.h, [Source](https://raw.githubusercontent.com/michaelg29/OpenGLTutorial/master/OpenGLTutorial/src/graphics/rendering/material.h)
     - OpenGLTutorial/src/graphics/rendering/material.cpp, [Source](https://raw.githubusercontent.com/michaelg29/OpenGLTutorial/master/OpenGLTutorial/src/graphics/rendering/material.cpp)
+5. Make sure to include all files in the project in Visual Studio
