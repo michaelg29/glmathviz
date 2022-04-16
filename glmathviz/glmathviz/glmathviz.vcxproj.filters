@@ -36,9 +36,14 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\programs\program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="glfw3.dll" />
+    <None Include="assets\shaders\rectangle.fs" />
+    <None Include="assets\shaders\rectangle.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\io\camera.h">
@@ -60,6 +65,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\rendering\vertexmemory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\programs\program.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\programs\rectangle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

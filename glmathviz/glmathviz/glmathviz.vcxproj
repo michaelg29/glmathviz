@@ -147,16 +147,21 @@
     <ClCompile Include="src\io\keyboard.cpp" />
     <ClCompile Include="src\io\mouse.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\programs\program.cpp" />
     <ClCompile Include="src\rendering\material.cpp" />
     <ClCompile Include="src\rendering\shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\shaders\rectangle.fs" />
+    <None Include="assets\shaders\rectangle.vs" />
     <None Include="glfw3.dll" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\io\camera.h" />
     <ClInclude Include="src\io\keyboard.h" />
     <ClInclude Include="src\io\mouse.h" />
+    <ClInclude Include="src\programs\program.h" />
+    <ClInclude Include="src\programs\rectangle.hpp" />
     <ClInclude Include="src\rendering\material.h" />
     <ClInclude Include="src\rendering\shader.h" />
     <ClInclude Include="src\rendering\uniformmemory.hpp" />
