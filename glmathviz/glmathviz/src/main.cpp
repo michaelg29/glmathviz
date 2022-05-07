@@ -7,6 +7,7 @@
 #include "rendering/shader.h"
 
 #include "programs/rectangle.hpp"
+#include "programs/sphere.hpp"
 
 #include "io/camera.h"
 #include "io/keyboard.h"
@@ -35,12 +36,13 @@ GLFWwindow* window = nullptr;
 bool re_render = true;
 
 // CAMERA
-Camera cam(glm::vec3(-1.0f, 0.0f, 0.5f));
+Camera cam(glm::vec3(-2.0f, 0.0f, 0.0f));
 glm::mat4 view;
 glm::mat4 projection;
 
 // GLOBAL PROGRAMS
 Rectangle rect;
+Sphere sphere(10);
 
 int main() {
 	std::cout << "Hello, math!" << std::endl;
@@ -79,8 +81,12 @@ int main() {
 	Mouse::mouseButtonCallbacks.push_back(mouseButtonChanged);
 	Mouse::mouseWheelCallbacks.push_back(scrollChanged);
 
+	// generate instances
+	sphere.addInstance(glm::vec3(1.0f), glm::vec3(0.2f));
+
 	// setup programs
 	rect.load();
+	sphere.load();
 
 	// timing variables
 	double dt = 0.0;
@@ -104,6 +110,7 @@ int main() {
 
 			// render programs
 			rect.render(dt);
+			sphere.render(dt);
 
 			// move rendered buffer to screen
 			glfwSwapBuffers(window);
@@ -114,6 +121,7 @@ int main() {
 
 	// cleanup programs
 	rect.cleanup();
+	sphere.cleanup();
 
 	// terminate
 	glfwTerminate();
@@ -187,6 +195,7 @@ void updateCameraMatrices() {
 	re_render = true;
 
 	rect.updateCameraMatrices(projection * view, cam.cameraPos);
+	sphere.updateCameraMatrices(projection * view, cam.cameraPos);
 }
 
 void keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) {
