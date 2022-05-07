@@ -11,7 +11,7 @@ out vec3 fragPos;
 uniform mat4 projView;
 
 void main() {
-	//tex = texCoord;
+	tex = texCoord;
 	fragPos = size * pos + offset;
 	gl_Position = projView * vec4(fragPos, 1.0);
 }
