@@ -12,7 +12,8 @@ public:
 
 	void updateCameraMatrices(glm::mat4 projView, glm::vec3 camPos);
 	virtual void load();
-	virtual void render(double dt);
+	virtual bool update(double dt);
+	virtual void render();
 	virtual void cleanup();
 };
 

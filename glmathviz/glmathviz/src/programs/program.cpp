@@ -7,5 +7,6 @@ void Program::updateCameraMatrices(glm::mat4 projView, glm::vec3 camPos) {
 }
 
 void Program::load() {}
-void Program::render(double dt) {}
+bool Program::update(double dt) { return false; }
+void Program::render() {}
 void Program::cleanup() {}

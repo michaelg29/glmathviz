@@ -41,6 +41,7 @@ glm::mat4 view;
 glm::mat4 projection;
 
 // GLOBAL PROGRAMS
+std::vector<Program*> programs;
 Rectangle rect;
 Sphere sphere(10);
 
@@ -83,10 +84,14 @@ int main() {
 
 	// generate instances
 	sphere.addInstance(glm::vec3(1.0f), glm::vec3(0.2f));
+	programs.push_back(&sphere);
+	programs.push_back(&rect);
 
 	// setup programs
-	rect.load();
-	sphere.load();
+	for (Program* program : programs)
+	{
+		program->load();
+	}
 
 	// timing variables
 	double dt = 0.0;
@@ -103,14 +108,25 @@ int main() {
 		glfwWaitEventsTimeout(0.001);
 		processInput(dt);
 
+		// update
+		for (Program* program : programs)
+		{
+			if (program->update(dt))
+			{
+				re_render = true;
+			}
+		}
+
 		// rendering
 		if (re_render) {
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// render programs
-			rect.render(dt);
-			sphere.render(dt);
+			for (Program* program : programs)
+			{
+				program->render();
+			}
 
 			// move rendered buffer to screen
 			glfwSwapBuffers(window);
@@ -120,8 +136,12 @@ int main() {
 	}
 
 	// cleanup programs
-	rect.cleanup();
-	sphere.cleanup();
+	for (Program* program : programs)
+	{
+		program->cleanup();
+	}
+
+	programs.clear();
 
 	// terminate
 	glfwTerminate();

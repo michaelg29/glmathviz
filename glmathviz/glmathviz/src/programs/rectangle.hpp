@@ -35,7 +35,7 @@ public:
 		VAO["VBO"].setAttPointer<GLfloat>(0, 3, GL_FLOAT, 3, 0);
 	}
 
-	void render(double dt) {
+	void render() {
 		shader.activate();
 		VAO.bind();
 		VAO.draw(GL_TRIANGLES, 0, 6);
