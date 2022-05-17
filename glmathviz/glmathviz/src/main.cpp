@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "rendering/shader.h"
+#include "rendering/uniformmemory.hpp"
 
 #include "programs/rectangle.hpp"
 #include "programs/sphere.hpp"
@@ -44,6 +45,13 @@ glm::mat4 projection;
 std::vector<Program*> programs;
 Rectangle rect;
 Sphere sphere(10);
+
+typedef struct {
+	glm::vec3 dir;
+	glm::vec4 ambient;
+	glm::vec4 diffuse;
+	glm::vec4 specular;
+} DirLight;
 
 int main() {
 	std::cout << "Hello, math!" << std::endl;
@@ -92,6 +100,38 @@ int main() {
 	{
 		program->load();
 	}
+
+	// lighting
+	DirLight dirLight = {
+		glm::vec3(-0.2f, -0.9f, -0.2f),
+		glm::vec4(0.5f, 0.5f, 0.5f, 1.0f),
+		glm::vec4(0.75f, 0.75f, 0.75f, 1.0f),
+		glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+	};
+	// write to UBO
+	UBO::UBO dirLightUBO({
+		UBO::newStruct({
+			UBO::Type::VEC3,
+			UBO::Type::VEC4,
+			UBO::Type::VEC4,
+			UBO::Type::VEC4
+		})
+	});
+	for (Program* program : programs)
+	{
+		dirLightUBO.attachToShader(program->shader, "DirLightUniform");
+	}
+	// generate/bind
+	dirLightUBO.generate();
+	dirLightUBO.bind();
+	dirLightUBO.initNullData(GL_STATIC_DRAW);
+	dirLightUBO.bindRange();
+	// write
+	dirLightUBO.startWrite();
+	dirLightUBO.writeElement<glm::vec3>(&dirLight.dir);
+	dirLightUBO.writeElement<glm::vec4>(&dirLight.ambient);
+	dirLightUBO.writeElement<glm::vec4>(&dirLight.diffuse);
+	dirLightUBO.writeElement<glm::vec4>(&dirLight.specular);
 
 	// timing variables
 	double dt = 0.0;
