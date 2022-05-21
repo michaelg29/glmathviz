@@ -3,6 +3,9 @@
 in vec2 tex;
 in vec3 fragPos;
 in vec3 normal;
+in vec3 diffMap;
+in vec3 specMap;
+in float shininess;
 
 uniform vec3 viewPos;
 
@@ -23,12 +26,9 @@ layout (std140) uniform DirLightUniform {
 vec4 calcDirLight(DirLight dirLight, vec3 norm, vec3 viewVec, vec4 diffMap, vec4 specMap);
 
 void main() {
-	vec4 diffMap = vec4(tex, 0.0, 1.0);
-	vec4 specMap = vec4(tex, 1.0, 1.0);
-
 	fragColor = vec4(0.0, 0.0, 0.0, 1.0);
 
-	fragColor += calcDirLight(dirLight, normalize(normal), normalize(viewPos - fragPos), diffMap, specMap);
+	fragColor += calcDirLight(dirLight, normalize(normal), normalize(viewPos - fragPos), vec4(diffMap, 1.0), vec4(specMap, 1.0));
 }
 
 vec4 calcDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec4 diffMap, vec4 specMap) {
@@ -46,7 +46,7 @@ vec4 calcDirLight(DirLight dirLight, vec3 norm, vec3 viewDir, vec4 diffMap, vec4
 		vec3 halfwayDir = normalize(lightDir + viewDir);
 		float dotProd = dot(norm, halfwayDir);
 
-		float spec = pow(max(dotProd, 0.0), 64);
+		float spec = pow(max(dotProd, 0.0), shininess * 128);
 		specular = dirLight.specular * (spec * specMap);
 	}
 

@@ -91,7 +91,7 @@ int main() {
 	Mouse::mouseWheelCallbacks.push_back(scrollChanged);
 
 	// generate instances
-	sphere.addInstance(glm::vec3(1.0f), glm::vec3(0.2f));
+	sphere.addInstance(glm::vec3(1.0f), glm::vec3(0.2f), Material::bronze);
 	programs.push_back(&sphere);
 	programs.push_back(&rect);
 

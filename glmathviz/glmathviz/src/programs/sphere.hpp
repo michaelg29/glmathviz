@@ -26,6 +26,8 @@ class Sphere : public Program {
 	unsigned int maxNoInstances;
 	std::vector<glm::vec3> offsets;
 	std::vector<glm::vec3> sizes;
+	std::vector<glm::vec3> diffuse;
+	std::vector<glm::vec4> specular;
 
 	ArrayObject VAO;
 
@@ -41,13 +43,15 @@ public:
 	Sphere(unsigned int maxNoInstances)
 		: maxNoInstances(maxNoInstances), noInstances(0) {}
 
-	bool addInstance(glm::vec3 offset, glm::vec3 size) {
+	bool addInstance(glm::vec3 offset, glm::vec3 size, Material mat) {
 		if (noInstances >= maxNoInstances) {
 			return false;
 		}
 
 		offsets.push_back(offset);
 		sizes.push_back(size);
+		diffuse.push_back(mat.diffuse);
+		specular.push_back(glm::vec4(mat.specular, mat.shininess));
 		noInstances++;
 
 		return true;
@@ -123,6 +127,18 @@ public:
 			VAO["sizeVBO"].bind();
 			VAO["sizeVBO"].setData<glm::vec3>(noInstances, &sizes[0], GL_STATIC_DRAW);
 			VAO["sizeVBO"].setAttPointer<GLfloat>(3, 3, GL_FLOAT, 3, 0, 1);
+
+			VAO["diffuseVBO"] = BufferObject(GL_ARRAY_BUFFER);
+			VAO["diffuseVBO"].generate();
+			VAO["diffuseVBO"].bind();
+			VAO["diffuseVBO"].setData<glm::vec3>(noInstances, &diffuse[0], GL_STATIC_DRAW);
+			VAO["diffuseVBO"].setAttPointer<GLfloat>(4, 3, GL_FLOAT, 3, 0, 1);
+
+			VAO["specularVBO"] = BufferObject(GL_ARRAY_BUFFER);
+			VAO["specularVBO"].generate();
+			VAO["specularVBO"].bind();
+			VAO["specularVBO"].setData<glm::vec4>(noInstances, &specular[0], GL_STATIC_DRAW);
+			VAO["specularVBO"].setAttPointer<GLfloat>(5, 4, GL_FLOAT, 4, 0, 1);
 		}
 	}
 
@@ -135,6 +151,11 @@ public:
 	void cleanup() {
 		shader.cleanup();
 		VAO.cleanup();
+
+		offsets.clear();
+		sizes.clear();
+		diffuse.clear();
+		specular.clear();
 	}
 };
 
