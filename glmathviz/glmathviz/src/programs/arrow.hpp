@@ -66,6 +66,10 @@ public:
 			return false;
 		}
 
+		// orthogonalize v with respect to u, armVector
+		// v = glm::normalize(glm::cross(armVector, u)); // more expensive operation
+		v = glm::normalize(v - u * glm::dot(u, v)); // orthogonalization
+
 		/*
 			in geometry shader, arrow drawn with base in XZ plane (y = 0) and arm along y-axis
 			transform y unit vector to be along the armVector
