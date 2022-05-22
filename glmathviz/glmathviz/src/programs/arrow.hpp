@@ -30,7 +30,7 @@ public:
 		: maxNoInstances(maxNoInstances), noInstances(0) {}
 
 	bool addInstance(glm::vec3 start, glm::vec3 end, float armRadius, float headRadius, float headHeight, Material material) {
-		if (noInstances >= maxNoInstances) {
+		if (noInstances >= maxNoInstances || start == end) {
 			return false;
 		}
 
