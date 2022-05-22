@@ -93,8 +93,10 @@ int main() {
 	Mouse::mouseWheelCallbacks.push_back(scrollChanged);
 
 	// generate instances
-	arrow.addInstance(glm::vec3(0.0f), glm::vec3(1.0f), 0.05f, 0.1f, 0.05f, Material::chrome);
-	sphere.addInstance(glm::vec3(1.0f), glm::vec3(0.2f), Material::bronze);
+	arrow.addInstance(glm::vec3(0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.0125f, 0.025f, 0.15f, Material::red_plastic);
+	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0125f, 0.025f, 0.15f, Material::green_plastic);
+	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0125f, 0.025f, 0.15f, Material::cyan_plastic);
+	sphere.addInstance(glm::vec3(0.0f), glm::vec3(0.05f), Material::bronze);
 	programs.push_back(&arrow);
 	programs.push_back(&sphere);
 	//programs.push_back(&rect);
