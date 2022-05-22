@@ -38,28 +38,43 @@ public:
 		glm::mat4 mat(1.0f);
 		glm::vec3 armVector = glm::normalize(end - start);
 
+		// determine vectors
+		// arm vector perpendicular to plane with equation ax*x + ay*y + az*z = 0
+		// get basis of the plane containing the base of the cylinder by isolating variable
 		glm::vec3 u, v;
-		if (armVector.y != 0.0f) {
-			u = glm::vec3(1.0f, -armVector.x / armVector.y, 0.0f);
-			v = glm::vec3(0.0f, -armVector.z / armVector.y, 1.0f);
+		if (armVector.y != 0.0f)
+		{
+			// y = -(ax*x + az*z)/ay
+			u = glm::normalize(glm::vec3(1.0f, -armVector.x / armVector.y, 0.0f));
+			v = glm::normalize(glm::vec3(0.0f, -armVector.z / armVector.y, 1.0f));
 		}
-		else if (armVector.z != 0.0f) {
-			u = glm::vec3(1.0f, 0.0f, -armVector.x / armVector.z);
-			v = glm::vec3(0.0f, 1.0f, -armVector.y / armVector.z);
+		else if (armVector.z != 0.0f)
+		{
+			// z = -(ax*x + ay*y)/az
+			u = glm::normalize(glm::vec3(1.0f, 0.0f, -armVector.x / armVector.z));
+			v = glm::normalize(glm::vec3(0.0f, 1.0f, -armVector.y / armVector.z));
 		}
-		else if (armVector.x != 0.0f) {
-			u = glm::vec3(-armVector.y / armVector.x, 1.0f, 0.0f);
-			v = glm::vec3(-armVector.z / armVector.x, 0.0f, 1.0f);
+		else if (armVector.x != 0.0f)
+		{
+			// x = -(ay*y + az*z)/ax
+			u = glm::normalize(glm::vec3(-armVector.y / armVector.x, 1.0f, 0.0f));
+			v = glm::normalize(glm::vec3(-armVector.z / armVector.x, 0.0f, 1.0f));
 		}
-		else {
+		else
+		{
 			// two points are the same
 			return false;
 		}
 
-		mat[0] = glm::vec4(glm::normalize(u), 0.0f);
-		mat[1] = glm::vec4(armVector, 0.0f);
-		mat[2] = glm::vec4(glm::normalize(v), 0.0f);
-		mat[3] = glm::vec4(start, 1.0f);
+		/*
+			in geometry shader, arrow drawn with base in XZ plane (y = 0) and arm along y-axis
+			transform y unit vector to be along the armVector
+			transform x/z unit vectors to be in the plane of the base, perpendicular to the arm
+		*/
+		mat[0] = glm::vec4(u, 0.0f); // how x unit vector gets transformed
+		mat[1] = glm::vec4(armVector, 0.0f); // how y unit vector gets transformed
+		mat[2] = glm::vec4(v, 0.0f); // how z unit vector gets transformed
+		mat[3] = glm::vec4(start, 1.0f); // translation to start point
 		modelMats.push_back(mat);
 		normalModelMats.push_back(glm::transpose(glm::inverse(glm::mat3(mat))));
 
