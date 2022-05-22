@@ -76,11 +76,6 @@ void main() {
 	specMap = gs_in[0].specular;
 	shininess = gs_in[0].shininess;
 
-	//buildCylinder(gs_in[0].mag - gs_in[0].headHeight, gs_in[0].armRadius);
-	//buildCone(gs_in[0].headRadius, gs_in[0].mag, gs_in[0].headHeight);
-
-	sendVertex(vec3(0.0, 0.0, 0.0), vec3(1.0, 0.0, 0.0));
-	sendVertex(vec3(0.0, 1.0, 0.0), vec3(1.0, 0.0, 0.0));
-	sendVertex(vec3(0.0, 0.0, 1.0), vec3(1.0, 0.0, 0.0));
-	sendVertex(vec3(0.0, 1.0, 1.0), vec3(1.0, 0.0, 0.0));
+	buildCylinder(gs_in[0].mag - gs_in[0].headHeight, gs_in[0].armRadius);
+	buildCone(gs_in[0].headRadius, gs_in[0].mag, gs_in[0].headHeight);
 }
