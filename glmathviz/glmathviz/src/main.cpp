@@ -7,6 +7,7 @@
 #include "rendering/shader.h"
 #include "rendering/uniformmemory.hpp"
 
+#include "programs/arrow.hpp"
 #include "programs/rectangle.hpp"
 #include "programs/sphere.hpp"
 
@@ -45,6 +46,7 @@ glm::mat4 projection;
 std::vector<Program*> programs;
 Rectangle rect;
 Sphere sphere(10);
+Arrow arrow(5);
 
 typedef struct {
 	glm::vec3 dir;
@@ -91,9 +93,11 @@ int main() {
 	Mouse::mouseWheelCallbacks.push_back(scrollChanged);
 
 	// generate instances
+	arrow.addInstance(glm::vec3(0.0f), glm::vec3(1.0f), 0.05f, 0.1f, 0.05f, Material::chrome);
 	sphere.addInstance(glm::vec3(1.0f), glm::vec3(0.2f), Material::bronze);
+	programs.push_back(&arrow);
 	programs.push_back(&sphere);
-	programs.push_back(&rect);
+	//programs.push_back(&rect);
 
 	// setup programs
 	for (Program* program : programs)

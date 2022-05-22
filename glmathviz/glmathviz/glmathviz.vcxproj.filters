@@ -46,6 +46,8 @@
     <None Include="assets\shaders\rectangle.vs" />
     <None Include="assets\shaders\sphere.vs" />
     <None Include="assets\shaders\sphere.fs" />
+    <None Include="assets\shaders\arrow.vs" />
+    <None Include="assets\shaders\arrow.gs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\io\camera.h">
@@ -76,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\programs\sphere.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\programs\arrow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
