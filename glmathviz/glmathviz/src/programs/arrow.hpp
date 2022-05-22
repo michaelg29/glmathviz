@@ -73,7 +73,7 @@ public:
 	}
 
 	void load() {
-		shader = Shader(false, "arrow.vs", "sphere.fs", "arrow.gs");
+		shader = Shader(false, "arrow.vert", "sphere.frag", "arrow.geom");
 
 		if (!noInstances) {
 			return;

@@ -33,20 +33,27 @@ uniform mat4 projView;
 int noEdges = 15;
 
 void sendVertex(vec3 pos, vec3 norm) {
+	// transform to world space
 	vec4 transformedPos = gs_in[0].model * vec4(pos, 1.0);
+
+	// output for fragment shader
 	fragPos = transformedPos.xyz;
 	normal = gs_in[0].normalModel * norm;
+	
+	// render vertex from camera POV
 	gl_Position = projView * transformedPos;
 	EmitVertex();
 }
 
 void buildCylinder(float height, float radius) {
+	// angle step
 	float increment = 2 * M_PI / float(noEdges);
 
 	for (float i = 0.0; i < float(noEdges) + 1.0; i += 1.0) {
 		vec3 curXZ = vec3(radius * cos(i * increment), 0.0, radius * sin(i * increment));
 		vec3 norm = curXZ;
 
+		// send vertices at top and bottom
 		sendVertex(curXZ, norm);
 		sendVertex(vec3(curXZ.x, height, curXZ.z), norm);
 	}
@@ -54,6 +61,7 @@ void buildCylinder(float height, float radius) {
 }
 
 void buildCone(float headRadius, float mag, float headHeight) {
+	// angle step
 	float increment = 2 * M_PI / float(noEdges);
 
 	bool sendHead = true;
@@ -62,6 +70,7 @@ void buildCone(float headRadius, float mag, float headHeight) {
 		vec3 norm = vec3(cos(i * increment), -1.0 / (-headHeight / headRadius), sin(i * increment));
 
 		sendVertex(curXZ, norm);
+		// send head for every other triangle
 		if (sendHead) {
 			sendVertex(vec3(0.0, mag, 0.0), norm);
 		}
@@ -76,6 +85,7 @@ void main() {
 	specMap = gs_in[0].specular;
 	shininess = gs_in[0].shininess;
 
+	// render components
 	buildCylinder(gs_in[0].mag - gs_in[0].headHeight, gs_in[0].armRadius);
 	buildCone(gs_in[0].headRadius, gs_in[0].mag, gs_in[0].headHeight);
 }

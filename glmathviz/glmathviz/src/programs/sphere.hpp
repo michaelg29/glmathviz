@@ -58,7 +58,7 @@ public:
 	}
 
 	void load() {
-		shader = Shader(false, "sphere.vs", "sphere.fs");
+		shader = Shader(false, "sphere.vert", "sphere.frag");
 
 		// generate vertices
 		unsigned int res = 100; // number of rows and columns

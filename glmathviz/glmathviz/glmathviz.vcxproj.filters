@@ -42,12 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="glfw3.dll" />
-    <None Include="assets\shaders\rectangle.fs" />
-    <None Include="assets\shaders\rectangle.vs" />
-    <None Include="assets\shaders\sphere.vs" />
-    <None Include="assets\shaders\sphere.fs" />
-    <None Include="assets\shaders\arrow.vs" />
-    <None Include="assets\shaders\arrow.gs" />
+    <None Include="assets\shaders\rectangle.frag" />
+    <None Include="assets\shaders\rectangle.vert" />
+    <None Include="assets\shaders\sphere.vert" />
+    <None Include="assets\shaders\sphere.frag" />
+    <None Include="assets\shaders\arrow.vert" />
+    <None Include="assets\shaders\arrow.geom" />
+    <None Include="assets\shaders\dirlight.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\io\camera.h">
