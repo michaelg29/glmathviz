@@ -258,8 +258,9 @@ void updateCameraMatrices() {
 
 	re_render = true;
 
-	rect.updateCameraMatrices(projection * view, cam.cameraPos);
-	sphere.updateCameraMatrices(projection * view, cam.cameraPos);
+	for (Program* program : programs) {
+		program->updateCameraMatrices(projection * view, cam.cameraPos);
+	}
 }
 
 void keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) {
