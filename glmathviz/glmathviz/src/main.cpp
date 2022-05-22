@@ -269,6 +269,10 @@ void keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods)
 	if (Keyboard::key(GLFW_KEY_ESCAPE)) {
 		glfwSetWindowShouldClose(window, true);
 	}
+
+	for (Program* program : programs) {
+		program->keyChanged(window, key, scancode, action, mods);
+	}
 }
 
 void cursorChanged(GLFWwindow* window, double _x, double _y) {
@@ -280,10 +284,16 @@ void cursorChanged(GLFWwindow* window, double _x, double _y) {
 	}
 
 	updateCameraMatrices();
+
+	for (Program* program : programs) {
+		program->cursorChanged(window, _x, _y);
+	}
 }
 
 void mouseButtonChanged(GLFWwindow* window, int button, int action, int mods) {
-
+	for (Program* program : programs) {
+		program->mouseButtonChanged(window, button, action, mods);
+	}
 }
 
 void scrollChanged(GLFWwindow* window, double dx, double dy) {
@@ -294,4 +304,8 @@ void scrollChanged(GLFWwindow* window, double dx, double dy) {
 	}
 
 	updateCameraMatrices();
+
+	for (Program* program : programs) {
+		program->scrollChanged(window, dx, dy);
+	}
 }
