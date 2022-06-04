@@ -98,8 +98,8 @@ public:
     }
 
     // draw arrays
-    void draw(GLenum mode, GLuint first, GLuint count) {
-        glDrawArrays(mode, first, count);
+    void draw(GLenum mode, GLuint first, GLuint count, GLuint instancecount = 1) {
+        glDrawArraysInstanced(mode, first, count, instancecount);
     }
 
     // draw

@@ -49,6 +49,8 @@
     <None Include="assets\shaders\arrow.vert" />
     <None Include="assets\shaders\arrow.geom" />
     <None Include="assets\shaders\dirlight.frag" />
+    <None Include="assets\shaders\surface.vert" />
+    <None Include="assets\shaders\surface.geom" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\io\camera.h">
@@ -82,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\programs\arrow.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\programs\surface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

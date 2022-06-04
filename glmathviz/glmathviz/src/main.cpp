@@ -10,6 +10,7 @@
 #include "programs/arrow.hpp"
 #include "programs/rectangle.hpp"
 #include "programs/sphere.hpp"
+#include "programs/surface.hpp"
 
 #include "io/camera.h"
 #include "io/keyboard.h"
@@ -47,6 +48,7 @@ std::vector<Program*> programs;
 Rectangle rect;
 Sphere sphere(10);
 Arrow arrow(5);
+Surface surface(5, 500, 500);
 
 typedef struct {
 	glm::vec3 dir;
@@ -97,8 +99,14 @@ int main() {
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0125f, 0.025f, 0.15f, Material::green_plastic);
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0125f, 0.025f, 0.15f, Material::cyan_plastic);
 	sphere.addInstance(glm::vec3(0.0f), glm::vec3(0.05f), Material::bronze);
+	surface.addInstance(glm::vec2(-6.f), glm::vec2(6.f), Material::yellow_plastic);
+	//surface.addInstance(glm::vec2(-2.5f, -100.0f), glm::vec2(2.5f, -2.5f), Material::red_plastic);
+	//surface.addInstance(glm::vec2(-2.5f, -100.0f), glm::vec2(-50.0f, 100.0f), Material::jade);
+
+	// register programs
 	programs.push_back(&arrow);
 	programs.push_back(&sphere);
+	programs.push_back(&surface);
 	//programs.push_back(&rect);
 
 	// setup programs
