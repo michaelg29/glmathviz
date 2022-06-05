@@ -16,11 +16,11 @@ public:
 	virtual void render();
 	virtual void cleanup();
 
-	virtual void processInput(double dt, GLFWwindow* window);
-	virtual void keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods);
-	virtual void cursorChanged(GLFWwindow* window, double _x, double _y);
-	virtual void mouseButtonChanged(GLFWwindow* window, int button, int action, int mods);
-	virtual void scrollChanged(GLFWwindow* window, double dx, double dy);
+	virtual bool processInput(double dt, GLFWwindow* window);
+	virtual bool keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods);
+	virtual bool cursorChanged(GLFWwindow* window, double _x, double _y);
+	virtual bool mouseButtonChanged(GLFWwindow* window, int button, int action, int mods);
+	virtual bool scrollChanged(GLFWwindow* window, double dx, double dy);
 };
 
 #endif // PROGRAM_H

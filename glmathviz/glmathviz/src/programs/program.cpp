@@ -11,8 +11,8 @@ bool Program::update(double dt) { return false; }
 void Program::render() {}
 void Program::cleanup() {}
 
-void Program::processInput(double dt, GLFWwindow* window) {}
-void Program::keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) {}
-void Program::cursorChanged(GLFWwindow* window, double _x, double _y) {}
-void Program::mouseButtonChanged(GLFWwindow* window, int button, int action, int mods) {}
-void Program::scrollChanged(GLFWwindow* window, double dx, double dy) {}
+bool Program::processInput(double dt, GLFWwindow* window) { return false; }
+bool Program::keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) { return false; }
+bool Program::cursorChanged(GLFWwindow* window, double _x, double _y) { return false; }
+bool Program::mouseButtonChanged(GLFWwindow* window, int button, int action, int mods) { return false; }
+bool Program::scrollChanged(GLFWwindow* window, double dx, double dy) { return false; }

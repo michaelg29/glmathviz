@@ -278,9 +278,9 @@ void keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods)
 		glfwSetWindowShouldClose(window, true);
 	}
 
-	for (Program* program : programs) {
-		program->keyChanged(window, key, scancode, action, mods);
-	}
+	for (Program* program : programs)
+		if (program->keyChanged(window, key, scancode, action, mods))
+			re_render = true;
 }
 
 void cursorChanged(GLFWwindow* window, double _x, double _y) {
@@ -293,15 +293,15 @@ void cursorChanged(GLFWwindow* window, double _x, double _y) {
 
 	updateCameraMatrices();
 
-	for (Program* program : programs) {
-		program->cursorChanged(window, _x, _y);
-	}
+	for (Program* program : programs)
+		if (program->cursorChanged(window, _x, _y))
+			re_render = true;
 }
 
 void mouseButtonChanged(GLFWwindow* window, int button, int action, int mods) {
-	for (Program* program : programs) {
-		program->mouseButtonChanged(window, button, action, mods);
-	}
+	for (Program* program : programs)
+		if (program->mouseButtonChanged(window, button, action, mods))
+			re_render = true;
 }
 
 void scrollChanged(GLFWwindow* window, double dx, double dy) {
@@ -313,7 +313,7 @@ void scrollChanged(GLFWwindow* window, double dx, double dy) {
 
 	updateCameraMatrices();
 
-	for (Program* program : programs) {
-		program->scrollChanged(window, dx, dy);
-	}
+	for (Program* program : programs)
+		if (program->scrollChanged(window, dx, dy))
+			re_render = true;
 }
