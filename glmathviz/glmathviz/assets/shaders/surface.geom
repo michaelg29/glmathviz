@@ -35,17 +35,18 @@ void sendVertex(vec3 pos, vec3 norm) {
 	EmitVertex();
 }
 
+// ===================================================================
+// CUSTOMIZE THIS TO AFFECT THE OUTPUT
 // surface y = f(x, z)
 float func(float x, float z) {
-	float denom = x*x + z*z;
-
-	return denom <= 0.01 ? 300.0 : 1 / denom;
+	return 1 / (x*x + z*z);
 }
 
 // normal vector to surface y = f(x, z)
 vec3 funcNorm(vec3 p) {
 	return vec3(2 * p.x * p.y * p.y, 1, 2 * p.z * p.y * p.y);
 }
+// ===================================================================
 
 void normalCalculus(float x, float z, float x_inc, float z_inc) {
 	// calculate corner points
