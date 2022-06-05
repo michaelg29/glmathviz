@@ -42,7 +42,7 @@ public:
 	}
 
 	void load() {
-		shader = Shader(false, "surface.vert", "sphere.frag", "surface.geom");
+		shader = Shader(false, "surface.vert", "dirlight.frag", "surface.geom");
 		shader.activate();
 		shader.setInt("x_cells", x_cells);
 		shader.setInt("z_cells", z_cells);

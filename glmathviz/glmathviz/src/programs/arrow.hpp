@@ -92,7 +92,7 @@ public:
 	}
 
 	void load() {
-		shader = Shader(false, "arrow.vert", "sphere.frag", "arrow.geom");
+		shader = Shader(false, "arrow.vert", "dirlight.frag", "arrow.geom");
 
 		if (!noInstances) {
 			return;
