@@ -8,6 +8,7 @@
 #include "../rendering/shader.h"
 #include "../rendering/material.h"
 #include "../rendering/vertexmemory.hpp"
+#include "../io/keyboard.h"
 
 #ifndef SURFACE_HPP
 #define SURFACE_HPP
@@ -16,6 +17,8 @@ class Surface : public Program {
 	ArrayObject VAO;
 	int x_cells;
 	int z_cells;
+
+	bool calculus;
 
 	unsigned int noInstances;
 	unsigned int maxNoInstances;
@@ -26,7 +29,8 @@ class Surface : public Program {
 public:
 	Surface(unsigned int maxNoInstances, int x_cells, int z_cells)
 		: noInstances(0), maxNoInstances(maxNoInstances), 
-		x_cells(x_cells), z_cells(z_cells) {}
+		x_cells(x_cells), z_cells(z_cells),
+		calculus(true) {}
 
 	bool addInstance(glm::vec2 start, glm::vec2 end, Material material) {
 		if (noInstances >= maxNoInstances) {
@@ -46,6 +50,7 @@ public:
 		shader.activate();
 		shader.setInt("x_cells", x_cells);
 		shader.setInt("z_cells", z_cells);
+		shader.setBool("calculus", calculus);
 
 		VAO.generate();
 		VAO.bind();
@@ -83,6 +88,18 @@ public:
 		bounds.clear();
 		diffuse.clear();
 		specular.clear();
+	}
+
+	bool keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) {
+		if (key == GLFW_KEY_C) {
+			if (Keyboard::keyWentDown(GLFW_KEY_C)) {
+				calculus = !calculus;
+				shader.setBool("calculus", calculus);
+				return true;
+			}
+		}
+
+		return false;
 	}
 };
 

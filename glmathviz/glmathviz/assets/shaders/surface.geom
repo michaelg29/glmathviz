@@ -26,6 +26,7 @@ out float shininess;
 uniform mat4 projView;
 uniform int x_cells;
 uniform int z_cells;
+uniform bool calculus;
 
 void sendVertex(vec3 pos, vec3 norm) {
 	fragPos = pos;
@@ -34,48 +35,40 @@ void sendVertex(vec3 pos, vec3 norm) {
 	EmitVertex();
 }
 
-vec4 funcAndNorm(float x, float z) {
-	// r(x, z) = (x, f(x, z), z)
-	// customizable for f
+// surface y = f(x, z)
+float func(float x, float z) {
 	float denom = x*x + z*z;
-	float y = 0.0;
-	if (abs(denom) <= 0.01) {
-		y = 300.0;
-	}
-	else {
-		y = 1 / denom;
-	}
 
-	vec3 norm = vec3(2 * x * y * y, 1, 2 * z * y * y); // cross(dr/dz, dr/dx)
-
-	return vec4(y, norm);
+	return denom <= 0.01 ? 300.0 : 1 / denom;
 }
 
-//vec4 funcAndNorm(float x, float z) {
-//	float y = cos(x) + cos(z);
-//	vec3 norm = vec3(sin(x), 1, sin(z));
-//
-//	return vec4(y, norm);
-//}
-
-void calcAndSendPoint(float x, float z) {
-	vec4 yNorm = funcAndNorm(x, z);
-	fragPos = vec3(x, yNorm.x, z);
-	normal = yNorm.yzw;
-	gl_Position = projView * vec4(fragPos, 1.0);
-	EmitVertex();
+// normal vector to surface y = f(x, z)
+vec3 funcNorm(vec3 p) {
+	return vec3(2 * p.x * p.y * p.y, 1, 2 * p.z * p.y * p.y);
 }
 
-vec3 func(float x, float z) {
-	return vec3(x, cos(x) + cos(z), z);
+void normalCalculus(float x, float z, float x_inc, float z_inc) {
+	// calculate corner points
+	vec3 p00 = vec3(x, func(x, z), z);
+	vec3 p01 = vec3(x, func(x, z + z_inc), z + z_inc);
+	vec3 p10 = vec3(x + x_inc, func(x + x_inc, z), z);
+	vec3 p11 = vec3(x + x_inc, func(x + x_inc, z + z_inc), z + z_inc);
+
+	// normals calculated using custom function
+	sendVertex(p00, funcNorm(p00));
+	sendVertex(p01, funcNorm(p01));
+	sendVertex(p10, funcNorm(p10));
+	sendVertex(p11, funcNorm(p11));
 }
 
-void calcPoints(float x, float z, float x_inc, float z_inc) {
-	vec3 p00 = func(x, z);
-	vec3 p01 = func(x, z + z_inc);
-	vec3 p10 = func(x + x_inc, z);
-	vec3 p11 = func(x + x_inc, z + z_inc);
+void normalCrossProd(float x, float z, float x_inc, float z_inc) {
+	// calculate corner points
+	vec3 p00 = vec3(x, func(x, z), z);
+	vec3 p01 = vec3(x, func(x, z + z_inc), z + z_inc);
+	vec3 p10 = vec3(x + x_inc, func(x + x_inc, z), z);
+	vec3 p11 = vec3(x + x_inc, func(x + x_inc, z + z_inc), z + z_inc);
 
+	// normals are cross product of vectors in the surface
 	sendVertex(p00, cross(p01 - p00, p10 - p00));
 	sendVertex(p01, cross(p11 - p01, p00 - p01));
 	sendVertex(p10, cross(p00 - p10, p11 - p10));
@@ -95,14 +88,14 @@ void main() {
 	float x = float(gs_in[0].idx / z_cells) * x_inc + gs_in[0].minBound.x;
 	float z = float(gs_in[0].idx % z_cells) * z_inc + gs_in[0].minBound.y;
 
-	// calculus to calculate normal vector
-	calcAndSendPoint(x, z);
-	calcAndSendPoint(x, z + z_inc);
-	calcAndSendPoint(x + x_inc, z);
-	calcAndSendPoint(x + x_inc, z + z_inc);
-
-	// cross product to calculate normal vector
-	//calcPoints(x, z, x_inc, z_inc);
+	if (calculus) {
+		// calculus to calculate normal vector
+		normalCalculus(x, z, x_inc, z_inc);
+	}
+	else {
+		// cross product to calculate normal vector
+		normalCrossProd(x, z, x_inc, z_inc);
+	}
 
 	EndPrimitive();
 }
