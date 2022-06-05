@@ -39,12 +39,24 @@ void sendVertex(vec3 pos, vec3 norm) {
 // CUSTOMIZE THIS TO AFFECT THE OUTPUT
 // surface y = f(x, z)
 float func(float x, float z) {
-	return 1 / (x*x + z*z);
+	return 1 - abs(x + z) - abs(z - x); // f6
+	return (sign(-0.65 - x) + sign(-0.35 - x) + sign(-0.5 - x) + sign(0.25 - x) + sign(0.55 - x)) / 7; // f5
+	return floor(exp(abs(x*z/2.0)) + round(1/cos(x*z))); // f4, can only be visualized with cross product
+	float f3 = (x*x + z*z) / 4; // f3
+	return 3 * sin(f3) / f3;
+	return cos(x) * sin(z); // f2
+	return 1 / (x*x + z*z); // f1
 }
 
 // normal vector to surface y = f(x, z)
 vec3 funcNorm(vec3 p) {
-	return vec3(2 * p.x * p.y * p.y, 1, 2 * p.z * p.y * p.y);
+	return vec3(0.0); // f6
+	return vec3(0.0); // f5
+	return vec3(0.0); // f4
+	float f3 = (p.x*p.x + p.z*p.z) / 4; // f3
+	return 3 * vec3(p.x * (sin(f3) - f3 * cos(f3)) / 2 / f3 / f3, 1, p.z * (sin(f3) - f3 * cos(f3)) / 2 / f3 / f3);
+	return vec3(sin(p.x) * sin(p.z), 1, -cos(p.x) * cos(p.z)); // f2
+	return vec3(2 * p.x * p.y * p.y, 1, 2 * p.z * p.y * p.y); // f1
 }
 // ===================================================================
 

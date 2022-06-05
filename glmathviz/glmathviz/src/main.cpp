@@ -99,7 +99,7 @@ int main() {
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0125f, 0.025f, 0.15f, Material::green_plastic);
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0125f, 0.025f, 0.15f, Material::cyan_plastic);
 	sphere.addInstance(glm::vec3(0.0f), glm::vec3(0.05f), Material::bronze);
-	surface.addInstance(glm::vec2(-6.f), glm::vec2(6.f), Material::yellow_plastic);
+	surface.addInstance(glm::vec2(-10.f), glm::vec2(10.f), Material::yellow_plastic);
 	//surface.addInstance(glm::vec2(-2.5f, -100.0f), glm::vec2(2.5f, -2.5f), Material::red_plastic);
 	//surface.addInstance(glm::vec2(-2.5f, -100.0f), glm::vec2(-50.0f, 100.0f), Material::jade);
 
