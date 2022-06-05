@@ -157,7 +157,6 @@
     <None Include="assets\shaders\dirlight.frag" />
     <None Include="assets\shaders\rectangle.frag" />
     <None Include="assets\shaders\rectangle.vert" />
-    <None Include="assets\shaders\dirlight.frag" />
     <None Include="assets\shaders\sphere.vert" />
     <None Include="assets\shaders\surface.geom" />
     <None Include="assets\shaders\surface.vert" />
