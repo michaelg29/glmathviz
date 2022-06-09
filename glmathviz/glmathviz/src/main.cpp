@@ -110,8 +110,7 @@ int main() {
 	//programs.push_back(&rect);
 
 	// setup programs
-	for (Program* program : programs)
-	{
+	for (Program* program : programs) {
 		program->load();
 	}
 
@@ -131,8 +130,7 @@ int main() {
 			UBO::Type::VEC4
 		})
 	});
-	for (Program* program : programs)
-	{
+	for (Program* program : programs) {
 		dirLightUBO.attachToShader(program->shader, "DirLightUniform");
 	}
 	// generate/bind
@@ -163,12 +161,8 @@ int main() {
 		processInput(dt);
 
 		// update
-		for (Program* program : programs)
-		{
-			if (program->update(dt))
-			{
-				re_render = true;
-			}
+		for (Program* program : programs) {
+			re_render |= program->update(dt);
 		}
 
 		// rendering
@@ -177,8 +171,7 @@ int main() {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// render programs
-			for (Program* program : programs)
-			{
+			for (Program* program : programs) {
 				program->render();
 			}
 
@@ -190,8 +183,7 @@ int main() {
 	}
 
 	// cleanup programs
-	for (Program* program : programs)
-	{
+	for (Program* program : programs) {
 		program->cleanup();
 	}
 
@@ -278,9 +270,9 @@ void keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods)
 		glfwSetWindowShouldClose(window, true);
 	}
 
-	for (Program* program : programs)
-		if (program->keyChanged(window, key, scancode, action, mods))
-			re_render = true;
+	for (Program* program : programs) {
+		re_render |= program->keyChanged(window, key, scancode, action, mods);
+	}
 }
 
 void cursorChanged(GLFWwindow* window, double _x, double _y) {
@@ -293,15 +285,15 @@ void cursorChanged(GLFWwindow* window, double _x, double _y) {
 
 	updateCameraMatrices();
 
-	for (Program* program : programs)
-		if (program->cursorChanged(window, _x, _y))
-			re_render = true;
+	for (Program* program : programs) {
+		re_render |= program->cursorChanged(window, _x, _y);
+	}
 }
 
 void mouseButtonChanged(GLFWwindow* window, int button, int action, int mods) {
-	for (Program* program : programs)
-		if (program->mouseButtonChanged(window, button, action, mods))
-			re_render = true;
+	for (Program* program : programs) {
+		re_render |= program->mouseButtonChanged(window, button, action, mods);
+	}
 }
 
 void scrollChanged(GLFWwindow* window, double dx, double dy) {
@@ -313,7 +305,7 @@ void scrollChanged(GLFWwindow* window, double dx, double dy) {
 
 	updateCameraMatrices();
 
-	for (Program* program : programs)
-		if (program->scrollChanged(window, dx, dy))
-			re_render = true;
+	for (Program* program : programs) {
+		re_render |= program->scrollChanged(window, dx, dy);
+	}
 }
