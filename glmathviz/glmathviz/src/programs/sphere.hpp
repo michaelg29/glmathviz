@@ -6,9 +6,11 @@
 #include <vector>
 
 #include "program.h"
+#include "../io/keyboard.h"
 #include "../rendering/shader.h"
 #include "../rendering/material.h"
 #include "../rendering/vertexmemory.hpp"
+#include "../rendering/transition.hpp"
 
 #ifndef SPHERE_HPP
 #define SPHERE_HPP
@@ -17,6 +19,10 @@ typedef struct {
 	glm::vec3 pos;
 	glm::vec2 texCoord;
 } SphereVertex;
+
+double proportionalFunction(double t) {
+	return -0.5 * glm::cos(5 * glm::pi<double>() * t) + 0.5;
+}
 
 class Sphere : public Program {
 	std::vector<SphereVertex> vertices;
@@ -31,6 +37,10 @@ class Sphere : public Program {
 
 	ArrayObject VAO;
 
+	CubicBezierTransition<glm::vec3> transition;
+	CubicBezierPath<glm::vec3> path;
+	bool transitionStarted = false;
+
 	void addVertex(glm::vec3 pos, float phi, float th) {
 		glm::vec2 texCoord;
 		texCoord.x = th / glm::two_pi<float>();
@@ -41,7 +51,18 @@ class Sphere : public Program {
 
 public:
 	Sphere(unsigned int maxNoInstances)
-		: maxNoInstances(maxNoInstances), noInstances(0) {}
+		: maxNoInstances(maxNoInstances), noInstances(0),
+		transition(CubicBezierTransition<glm::vec3>(
+			glm::vec3(0.0f),
+			0.25, -0.5,
+			0.25, 1.5,
+			glm::vec3(1.0f), 2.5)),
+		path(CubicBezierPath<glm::vec3>(
+			glm::vec3(0.0f), 
+			glm::vec3(1.0f), 
+			glm::vec3(3.0f, -1.0f, 2.5f),
+			glm::vec3(2.0f),
+			3.0)) {}
 
 	bool addInstance(glm::vec3 offset, glm::vec3 size, Material mat) {
 		if (noInstances >= maxNoInstances) {
@@ -142,6 +163,17 @@ public:
 		}
 	}
 
+	bool update(double dt) {
+		if (noInstances && transitionStarted) {
+			offsets[0] = path.update(dt);
+			VAO["offsetVBO"].bind();
+			VAO["offsetVBO"].updateData<glm::vec3>(0, noInstances, &offsets[0]);
+			return true;
+		}
+
+		return false;
+	}
+
 	void render() {
 		shader.activate();
 		VAO.bind();
@@ -156,6 +188,14 @@ public:
 		sizes.clear();
 		diffuse.clear();
 		specular.clear();
+	}
+
+	bool keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) {
+		if (key == GLFW_KEY_T && Keyboard::keyWentDown(GLFW_KEY_T)) {
+			transitionStarted = !transitionStarted;
+		}
+
+		return false;
 	}
 };
 

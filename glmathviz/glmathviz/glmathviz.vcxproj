@@ -173,6 +173,7 @@
     <ClInclude Include="src\programs\surface.hpp" />
     <ClInclude Include="src\rendering\material.h" />
     <ClInclude Include="src\rendering\shader.h" />
+    <ClInclude Include="src\rendering\transition.hpp" />
     <ClInclude Include="src\rendering\uniformmemory.hpp" />
     <ClInclude Include="src\rendering\vertexmemory.hpp" />
   </ItemGroup>
