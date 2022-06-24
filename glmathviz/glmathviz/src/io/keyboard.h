@@ -38,6 +38,8 @@ public:
     // get if key recently changed and is down
     static bool keyWentDown(int key);
 
+    static void clearKeysChanged();
+
 private:
     /*
         static keyboard values

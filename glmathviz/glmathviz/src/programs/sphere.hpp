@@ -37,9 +37,7 @@ class Sphere : public Program {
 
 	ArrayObject VAO;
 
-	CubicBezierTransition<glm::vec3> transition;
-	CubicBezierPath<glm::vec3> path;
-	bool transitionStarted = false;
+	Transition<glm::vec3> *path;
 
 	void addVertex(glm::vec3 pos, float phi, float th) {
 		glm::vec2 texCoord;
@@ -50,19 +48,9 @@ class Sphere : public Program {
 	}
 
 public:
-	Sphere(unsigned int maxNoInstances)
+	Sphere(Transition<glm::vec3> *path, unsigned int maxNoInstances)
 		: maxNoInstances(maxNoInstances), noInstances(0),
-		transition(CubicBezierTransition<glm::vec3>(
-			glm::vec3(0.0f),
-			0.25, -0.5,
-			0.25, 1.5,
-			glm::vec3(1.0f), 2.5)),
-		path(CubicBezierPath<glm::vec3>(
-			glm::vec3(0.0f), 
-			glm::vec3(1.0f), 
-			glm::vec3(3.0f, -1.0f, 2.5f),
-			glm::vec3(2.0f),
-			3.0)) {}
+		path(path) {}
 
 	bool addInstance(glm::vec3 offset, glm::vec3 size, Material mat) {
 		if (noInstances >= maxNoInstances) {
@@ -164,8 +152,8 @@ public:
 	}
 
 	bool update(double dt) {
-		if (noInstances && transitionStarted) {
-			offsets[0] = path.update(dt);
+		if (noInstances && path->isRunning()) {
+			offsets[0] = path->getCurrent();
 			VAO["offsetVBO"].bind();
 			VAO["offsetVBO"].updateData<glm::vec3>(0, noInstances, &offsets[0]);
 			return true;
@@ -188,14 +176,6 @@ public:
 		sizes.clear();
 		diffuse.clear();
 		specular.clear();
-	}
-
-	bool keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) {
-		if (key == GLFW_KEY_T && Keyboard::keyWentDown(GLFW_KEY_T)) {
-			transitionStarted = !transitionStarted;
-		}
-
-		return false;
 	}
 };
 

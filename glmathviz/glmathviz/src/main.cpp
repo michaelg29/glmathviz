@@ -11,6 +11,7 @@
 #include "programs/rectangle.hpp"
 #include "programs/sphere.hpp"
 #include "programs/surface.hpp"
+#include "programs/path.hpp"
 
 #include "io/camera.h"
 #include "io/keyboard.h"
@@ -46,9 +47,24 @@ glm::mat4 projection;
 // GLOBAL PROGRAMS
 std::vector<Program*> programs;
 Rectangle rect;
-Sphere sphere(10);
 Arrow arrow(5);
 Surface surface(5, 500, 500);
+//Transition<glm::vec3>* transitionPath = new CubicBezierPath<glm::vec3>(
+//	glm::vec3(0.0f),
+//	glm::vec3(1.0f),
+//	glm::vec3(-3.0f, -1.0f, 2.5f),
+//	glm::vec3(2.0f),
+//	3.0);
+glm::vec3 func(double t) {
+	return { t, cos(t), sin(t) };
+}
+ParametrizedPath* transitionPath = new ParametrizedPath(
+	func,
+	0.0, glm::two_pi<double>(),
+	2.0
+	);
+Sphere sphere(transitionPath, 10);
+Path path(transitionPath, 200);
 
 typedef struct {
 	glm::vec3 dir;
@@ -98,13 +114,14 @@ int main() {
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.0125f, 0.025f, 0.15f, Material::red_plastic);
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0125f, 0.025f, 0.15f, Material::green_plastic);
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0125f, 0.025f, 0.15f, Material::cyan_plastic);
-	sphere.addInstance(glm::vec3(0.0f), glm::vec3(0.25f), Material::bronze);
+	sphere.addInstance(glm::vec3(0.0f), glm::vec3(0.05f), Material::bronze);
 	//surface.addInstance(glm::vec2(-10.f), glm::vec2(10.f), Material::yellow_plastic);
 	//surface.addInstance(glm::vec2(-2.5f, -100.0f), glm::vec2(2.5f, -2.5f), Material::red_plastic);
 	//surface.addInstance(glm::vec2(-2.5f, -100.0f), glm::vec2(-50.0f, 100.0f), Material::jade);
 
 	// register programs
 	programs.push_back(&arrow);
+	programs.push_back(&path);
 	programs.push_back(&sphere);
 	programs.push_back(&surface);
 	//programs.push_back(&rect);
@@ -161,6 +178,7 @@ int main() {
 		processInput(dt);
 
 		// update
+		transitionPath->update(dt);
 		for (Program* program : programs) {
 			re_render |= program->update(dt);
 		}
@@ -248,6 +266,8 @@ void processInput(double dt) {
 		cam.updateCameraPos(CameraDirection::DOWN, dt);
 		updateCameraMatrices();
 	}
+
+	Keyboard::clearKeysChanged();
 }
 
 void updateCameraMatrices() {
@@ -268,6 +288,10 @@ void updateCameraMatrices() {
 void keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (Keyboard::key(GLFW_KEY_ESCAPE)) {
 		glfwSetWindowShouldClose(window, true);
+	}
+
+	if (key == GLFW_KEY_T && Keyboard::keyWentDown(key)) {
+		transitionPath->toggleRunning();
 	}
 
 	for (Program* program : programs) {

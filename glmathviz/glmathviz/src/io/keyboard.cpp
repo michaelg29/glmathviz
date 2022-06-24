@@ -46,10 +46,7 @@ bool Keyboard::key(int key) {
 
 // get if key recently changed
 bool Keyboard::keyChanged(int key) {
-    bool ret = keysChanged[key];
-    // set to false because change no longer new
-    keysChanged[key] = false;
-    return ret;
+    return keysChanged[key];
 }
 
 // get if key recently changed and is up
@@ -60,4 +57,8 @@ bool Keyboard::keyWentDown(int key) {
 // get if key recently changed and is down
 bool Keyboard::keyWentUp(int key) {
     return !keys[key] && keyChanged(key);
+}
+
+void Keyboard::clearKeysChanged() {
+    memset(keysChanged, 0, (size_t)GLFW_KEY_LAST);
 }

@@ -167,6 +167,7 @@
     <ClInclude Include="src\io\keyboard.h" />
     <ClInclude Include="src\io\mouse.h" />
     <ClInclude Include="src\programs\arrow.hpp" />
+    <ClInclude Include="src\programs\path.hpp" />
     <ClInclude Include="src\programs\program.h" />
     <ClInclude Include="src\programs\rectangle.hpp" />
     <ClInclude Include="src\programs\sphere.hpp" />

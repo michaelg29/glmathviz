@@ -4,8 +4,10 @@
 template <typename T>
 class Transition {
 private:
+	T cur;
 	double cur_t;
 	double duration;
+	bool running;
 
 protected:
 	T start;
@@ -16,19 +18,36 @@ protected:
 
 public:
 	Transition(T start, T end, double duration)
-		: start(start), end(end), duration(duration), cur_t(0.0) { }
+		: start(start), end(end), cur(start),
+		duration(duration), cur_t(0.0), 
+		running(false) { }
 
-	T update(double dt) {
-		cur_t += dt / duration;
-		if (cur_t <= 0.0) {
-			return start;
-		}
-		else if (cur_t >= 1.0) {
-			return end;
-		}
+	void update(double dt) {
+		if (running) {
+			cur_t += dt / duration;
+			if (cur_t <= 0.0 || cur_t >= 1.0) {
+				return;
+			}
 
-		// calculate new transition point
-		return calculateNew(cur_t);
+			// calculate new transition point
+			cur = calculateNew(cur_t);
+		}
+	}
+
+	double getDuration() {
+		return duration;
+	}
+
+	void toggleRunning() {
+		running = !running;
+	}
+
+	bool isRunning() {
+		return running;
+	}
+
+	T getCurrent() {
+		return cur;
 	}
 };
 
@@ -138,11 +157,29 @@ class CubicBezierPath : public Transition<T> {
 			+ (float)(t * t * t) * P3; // t^3 P3
 	}
 
-
 public:
 	CubicBezierPath(T start, T P1, T P2, T end, double duration)
 		: Transition<T>(start, end, duration),
 		P0(start), P1(P1), P2(P2), P3(end) { }
+};
+
+typedef glm::vec3(*path_func)(double t);
+class ParametrizedPath : public Transition<glm::vec3> {
+	path_func func;
+
+	double t0;
+	double t1;
+
+	glm::vec3 calculateNew(double t) {
+		// LERP between t0 and t1
+		t = t0 + t * (t1 - t0);
+		return func(t);
+	}
+
+public:
+	ParametrizedPath(path_func func, double t0, double t1, double duration)
+		: Transition<glm::vec3>(func(t0), func(t1), duration),
+		t0(t0), t1(t1), func(func) {}
 };
 
 #endif // TRANSITION_H
