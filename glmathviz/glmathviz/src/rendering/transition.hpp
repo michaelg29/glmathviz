@@ -52,6 +52,10 @@ public:
 		running = !running;
 	}
 
+	void run() {
+		running = 1;
+	}
+
 	bool isRunning() {
 		return running;
 	}

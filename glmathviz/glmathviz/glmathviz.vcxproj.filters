@@ -50,6 +50,7 @@
     <None Include="assets\shaders\dirlight.frag" />
     <None Include="assets\shaders\surface.vert" />
     <None Include="assets\shaders\surface.geom" />
+    <None Include="assets\shaders\stereo.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\io\camera.h">
@@ -92,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\programs\path.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\programs\stereographic_proj.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

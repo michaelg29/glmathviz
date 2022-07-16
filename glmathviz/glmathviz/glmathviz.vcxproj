@@ -158,6 +158,7 @@
     <None Include="assets\shaders\rectangle.frag" />
     <None Include="assets\shaders\rectangle.vert" />
     <None Include="assets\shaders\sphere.vert" />
+    <None Include="assets\shaders\stereo.vert" />
     <None Include="assets\shaders\surface.geom" />
     <None Include="assets\shaders\surface.vert" />
     <None Include="glfw3.dll" />
@@ -171,6 +172,7 @@
     <ClInclude Include="src\programs\program.h" />
     <ClInclude Include="src\programs\rectangle.hpp" />
     <ClInclude Include="src\programs\sphere.hpp" />
+    <ClInclude Include="src\programs\stereographic_proj.hpp" />
     <ClInclude Include="src\programs\surface.hpp" />
     <ClInclude Include="src\rendering\material.h" />
     <ClInclude Include="src\rendering\shader.h" />

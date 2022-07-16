@@ -12,6 +12,7 @@
 #include "programs/sphere.hpp"
 #include "programs/surface.hpp"
 #include "programs/path.hpp"
+#include "programs/stereographic_proj.hpp"
 
 #include "io/camera.h"
 #include "io/keyboard.h"
@@ -49,12 +50,6 @@ std::vector<Program*> programs;
 Rectangle rect;
 Arrow arrow(5);
 Surface surface(5, 500, 500);
-//Transition<glm::vec3>* transitionPath = new CubicBezierPath<glm::vec3>(
-//	glm::vec3(0.0f),
-//	glm::vec3(1.0f),
-//	glm::vec3(-3.0f, -1.0f, 2.5f),
-//	glm::vec3(2.0f),
-//	3.0);
 glm::vec3 func(double t) {
 	return { 0.0, 3*cos(t) - 3.0, sin(t) };
 }
@@ -65,6 +60,7 @@ ParametrizedPath* transitionPath = new ParametrizedPath(
 	);
 Sphere sphere(transitionPath, 10);
 Path path(transitionPath, 200);
+StereographicProj stereo;
 
 typedef struct {
 	glm::vec3 dir;
@@ -114,17 +110,18 @@ int main() {
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.0125f, 0.025f, 0.15f, Material::red_plastic);
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0125f, 0.025f, 0.15f, Material::green_plastic);
 	arrow.addInstance(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0125f, 0.025f, 0.15f, Material::cyan_plastic);
-	sphere.addInstance(glm::vec3(0.0f), glm::vec3(0.05f), Material::bronze);
-	surface.addInstance(glm::vec2(-10.f), glm::vec2(10.f), Material::yellow_plastic);
+	//sphere.addInstance(glm::vec3(0.0f), glm::vec3(0.05f), Material::bronze);
+	//surface.addInstance(glm::vec2(-10.f), glm::vec2(10.f), Material::yellow_plastic);
 	//surface.addInstance(glm::vec2(-2.5f, -100.0f), glm::vec2(2.5f, -2.5f), Material::red_plastic);
 	//surface.addInstance(glm::vec2(-2.5f, -100.0f), glm::vec2(-50.0f, 100.0f), Material::jade);
 
 	// register programs
 	programs.push_back(&arrow);
-	programs.push_back(&path);
-	programs.push_back(&sphere);
-	programs.push_back(&surface);
+	//programs.push_back(&path);
+	//programs.push_back(&sphere);
+	//programs.push_back(&surface);
 	//programs.push_back(&rect);
+	programs.push_back(&stereo);
 
 	transitionPath->setCyclical();
 
