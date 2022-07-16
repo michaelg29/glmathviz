@@ -15,7 +15,6 @@ in VS_OUT {
 	vec3 specular;
 	float shininess;
 } gs_in[];
-
 out vec2 tex;
 out vec3 fragPos;
 out vec3 normal;
@@ -35,10 +34,14 @@ void sendVertex(vec3 pos, vec3 norm) {
 	EmitVertex();
 }
 
+uniform float x_offset;
+
 // ===================================================================
 // CUSTOMIZE THIS TO AFFECT THE OUTPUT
 // surface y = f(x, z)
 float func(float x, float z) {
+	x -= x_offset;
+	return 1 / (x*x + z*z); // f1
 	return 1 - abs(x + z) - abs(z - x); // f6
 	return (sign(-0.65 - x) + sign(-0.35 - x) + sign(-0.5 - x) + sign(0.25 - x) + sign(0.55 - x)) / 7; // f5
 	return floor(exp(abs(x*z/2.0)) + round(1/cos(x*z))); // f4, can only be visualized with cross product
@@ -50,6 +53,8 @@ float func(float x, float z) {
 
 // normal vector to surface y = f(x, z)
 vec3 funcNorm(vec3 p) {
+	p.x -= x_offset;
+	return vec3(2 * p.x * p.y * p.y, 1, 2 * p.z * p.y * p.y); // f1
 	return vec3(0.0); // f6
 	return vec3(0.0); // f5
 	return vec3(0.0); // f4

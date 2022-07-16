@@ -8,6 +8,7 @@ private:
 	double cur_t;
 	double duration;
 	bool running;
+	bool cyclical;
 
 protected:
 	T start;
@@ -25,12 +26,21 @@ public:
 	void update(double dt) {
 		if (running) {
 			cur_t += dt / duration;
-			if (cur_t <= 0.0 || cur_t >= 1.0) {
-				return;
+			if (cur_t <= 0.0) {
+				cur = start;
 			}
-
-			// calculate new transition point
-			cur = calculateNew(cur_t);
+			else if (cur_t >= 1.0) {
+				cur = end;
+				if (cyclical) {
+					// cycle around
+					cur_t -= (double)(int)cur_t;
+					update(0.0);
+				}
+			}
+			else {
+				// calculate new transition point
+				cur = calculateNew(cur_t);
+			}
 		}
 	}
 
@@ -44,6 +54,10 @@ public:
 
 	bool isRunning() {
 		return running;
+	}
+
+	void setCyclical(bool cyclical = true) {
+		this->cyclical = cyclical;
 	}
 
 	T getCurrent() {

@@ -8,6 +8,7 @@
 #include "../rendering/shader.h"
 #include "../rendering/material.h"
 #include "../rendering/vertexmemory.hpp"
+#include "../rendering/transition.hpp"
 #include "../io/keyboard.h"
 
 #ifndef SURFACE_HPP
@@ -26,11 +27,14 @@ class Surface : public Program {
 	std::vector<glm::vec3> diffuse;
 	std::vector<glm::vec4> specular;
 
+	CubicBezierTransition<double> transition;
+
 public:
 	Surface(unsigned int maxNoInstances, int x_cells, int z_cells)
 		: noInstances(0), maxNoInstances(maxNoInstances), 
 		x_cells(x_cells), z_cells(z_cells),
-		calculus(true) {}
+		calculus(true),
+		transition(CubicBezierTransition<double>::newEaseTransition(0.0, 3.0, 5.0)) {}
 
 	bool addInstance(glm::vec2 start, glm::vec2 end, Material material) {
 		if (noInstances >= maxNoInstances) {
@@ -51,6 +55,7 @@ public:
 		shader.setInt("x_cells", x_cells);
 		shader.setInt("z_cells", z_cells);
 		shader.setBool("calculus", calculus);
+		shader.setFloat("x_offset", 0.0f);
 
 		VAO.generate();
 		VAO.bind();
@@ -76,6 +81,17 @@ public:
 		}
 	}
 
+	bool update(double dt) {
+		if (transition.isRunning()) {
+			shader.activate();
+			transition.update(dt);
+			shader.setFloat("x_offset", (float)transition.getCurrent());
+			return true;
+		}
+
+		return false;
+	}
+
 	void render() {
 		shader.activate();
 		VAO.bind();
@@ -97,6 +113,10 @@ public:
 				shader.setBool("calculus", calculus);
 				return true;
 			}
+		}
+
+		if (key == GLFW_KEY_T && Keyboard::keyWentDown(GLFW_KEY_T)) {
+			transition.toggleRunning();
 		}
 
 		return false;
