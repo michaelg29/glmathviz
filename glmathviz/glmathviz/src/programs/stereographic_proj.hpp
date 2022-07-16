@@ -44,6 +44,12 @@ public:
 		return false;
 	}
 
+	void render() {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		Sphere::render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
 	bool keyChanged(GLFWwindow* window, int key, int scancode, int action, int mods) {
 		if (key == GLFW_KEY_RIGHT && Keyboard::keyWentDown(GLFW_KEY_RIGHT)) {
 			direction = 1.0;

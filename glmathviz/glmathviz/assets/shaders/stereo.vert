@@ -19,9 +19,14 @@ uniform float t;
 
 void main() {
 	tex = texCoord;
-	fragPos = size * pos + offset + vec3(0.0, t, 0.0);
+
+	float factor = 1.0 + t * pos.y / (1.0 - pos.y);
+	float x = pos.x * factor;
+	float y = (1.0 - t) * pos.y;
+	float z = pos.z * factor;
+	fragPos = vec3(x, y, z);
 	normal = pos;
-	diffMap = diffuse;
+	diffMap = (pos + vec3(1.0)) / 2.0;
 	specMap = specular.xyz;
 	shininess = specular.w;
 

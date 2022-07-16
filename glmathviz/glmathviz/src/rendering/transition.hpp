@@ -25,7 +25,11 @@ public:
 
 	void update(double dt) {
 		if (running) {
-			cur_t += dt / duration;
+			if ((dt > 0.0 && cur_t < 1.0) ||
+				(dt < 0.0 && cur_t > 0.0)) {
+				cur_t += dt / duration;
+			}
+			
 			if (cur_t <= 0.0) {
 				cur = start;
 			}
