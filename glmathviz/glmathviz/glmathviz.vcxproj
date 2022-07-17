@@ -154,8 +154,8 @@
   <ItemGroup>
     <None Include="assets\shaders\arrow.geom" />
     <None Include="assets\shaders\arrow.vert" />
+    <None Include="assets\shaders\color.frag" />
     <None Include="assets\shaders\dirlight.frag" />
-    <None Include="assets\shaders\rectangle.frag" />
     <None Include="assets\shaders\rectangle.vert" />
     <None Include="assets\shaders\sphere.vert" />
     <None Include="assets\shaders\stereo.vert" />

@@ -24,7 +24,7 @@ private:
 
 public:
 	void load() {
-		shader = Shader(false, "rectangle.vert", "rectangle.frag");
+		shader = Shader(false, "rectangle.vert", "color.frag");
 
 		VAO.generate();
 		VAO.bind();
