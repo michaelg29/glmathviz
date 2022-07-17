@@ -13,6 +13,7 @@
 #include "programs/surface.hpp"
 #include "programs/path.hpp"
 #include "programs/stereographic_proj.hpp"
+#include "programs/grid.hpp"
 
 #include "io/camera.h"
 #include "io/keyboard.h"
@@ -61,6 +62,7 @@ ParametrizedPath* transitionPath = new ParametrizedPath(
 Sphere sphere(transitionPath, 10);
 Path path(transitionPath, 200);
 StereographicProj stereo;
+Grid grid(glm::ivec2(-10, -10), glm::ivec2(10, 10));
 
 typedef struct {
 	glm::vec3 dir;
@@ -122,6 +124,7 @@ int main() {
 	//programs.push_back(&surface);
 	//programs.push_back(&rect);
 	programs.push_back(&stereo);
+	programs.push_back(&grid);
 
 	transitionPath->setCyclical();
 

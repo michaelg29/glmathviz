@@ -156,6 +156,8 @@
     <None Include="assets\shaders\arrow.vert" />
     <None Include="assets\shaders\color.frag" />
     <None Include="assets\shaders\dirlight.frag" />
+    <None Include="assets\shaders\grid.geom" />
+    <None Include="assets\shaders\grid.vert" />
     <None Include="assets\shaders\rectangle.vert" />
     <None Include="assets\shaders\sphere.vert" />
     <None Include="assets\shaders\stereo.vert" />
@@ -168,6 +170,7 @@
     <ClInclude Include="src\io\keyboard.h" />
     <ClInclude Include="src\io\mouse.h" />
     <ClInclude Include="src\programs\arrow.hpp" />
+    <ClInclude Include="src\programs\grid.hpp" />
     <ClInclude Include="src\programs\path.hpp" />
     <ClInclude Include="src\programs\program.h" />
     <ClInclude Include="src\programs\rectangle.hpp" />
