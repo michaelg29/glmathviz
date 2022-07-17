@@ -26,9 +26,14 @@ void main() {
 	float z = pos.z * factor;
 	fragPos = vec3(x, y, z);
 	normal = pos;
-	diffMap = (pos + vec3(1.0)) / 2.0;
-	specMap = specular.xyz;
-	shininess = specular.w;
+	if ((1.0 - pos.x * pos.x - pos.z * pos.z) < 0.001) {
+		diffMap = vec3(1.0);
+	}
+	else {
+		diffMap = (pos + vec3(1.0)) / 2.0;
+	}
+	specMap = vec3(1.0);
+	shininess = 0.5;
 
 	gl_Position = projView * vec4(fragPos, 1.0);
 }
