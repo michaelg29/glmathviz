@@ -31,12 +31,14 @@ public:
 
 		shader.cleanup();
 		shader = Shader(false, "stereo.vert", "dirlight.frag");
+		shader.activate();
 		shader.setFloat("t", 0.0f);
 	}
 
 	bool update(double dt) {
 		if (transition.isRunning()) {
 			transition.update(direction * dt);
+			shader.activate();
 			shader.setFloat("t", (float)transition.getCurrent());
 			return true;
 		}
